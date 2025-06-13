@@ -1,0 +1,86 @@
+name: "humanedit-geometry"
+tag: "${rmspace:${system.prompt_processor_global.prompt},_}"
+exp_root_dir: "outputs"
+seed: 0
+comm_cfg_path: "../comm_config.yaml"
+
+data_type: "random-camera-global-local-datamodule"
+data:
+  width: 512
+  height: 512
+  camera_distance_range: [3.3, 3.5]
+  fovy_range: [40, 45]
+  elevation_range: [-5, 10]
+  azimuth_range: [-180, 180]
+  random_test: true
+  sampling_type: "global_local"
+  comm_cfg: ${comm_cfg_path}
+
+system_type: "humanedit-system"
+system:
+  geometry_type: "implicit-sdf"
+  start_sdf_loss_step: 3000
+  shape_init: false
+  sub_step: 500
+  use_additional_input: false
+  geometry:
+    radius: 1.0
+    n_feature_dims: 0
+    isosurface_chunk: 0 
+    use_sdf_loss: true
+    start_sdf_loss_step: ${system.start_sdf_loss_step} 
+    comm_cfg: ${comm_cfg_path}
+
+  renderer:
+    use_sdf_loss: ${system.geometry.use_sdf_loss}
+    use_additional_input: ${system.use_additional_input}
+
+  prompt_processor_local:
+    pretrained_model_name_or_path: "../pretrained_models/normal-adapted-sd1.5"
+    prompt: ???
+
+  prompt_processor_global:
+    pretrained_model_name_or_path: ${system.prompt_processor_local.pretrained_model_name_or_path}
+    prompt: ???
+
+  # normal sds guidance
+  guidance_type_normal: "sds-du-guidance"
+  guidance_normal:
+    pretrained_model_name_or_path: ${system.prompt_processor_local.pretrained_model_name_or_path}
+    guidance_scale: 50 
+    min_step_percent: [3000, 0.02, 0.02, 6001]
+    max_step_percent: [3000, 0.80, 0.21, 6001]
+
+  loggers:
+    wandb:
+      enable: false
+      project: 'threestudio'
+      name: None
+
+  loss:
+    lambda_sds: 0.5
+    lambda_sds_global: 0.5
+    lambda_sdf: 2000
+    lambda_sdf_recon: 5000
+    lambda_normal_consistency: 2000 
+    lambda_normal_consistency_sub: 2000
+
+  optimizer:
+    name: AdamW
+    args:
+      lr: 0.00002
+      betas: [0.9, 0.99]
+      eps: 1.e-15
+
+trainer:
+  max_steps: 10000
+  log_every_n_steps: 1
+  num_sanity_val_steps: 1
+  val_check_interval: 1000
+  enable_progress_bar: true
+  precision: 32
+
+checkpoint:
+  save_last: true # save at each validation time
+  save_top_k: -1
+  every_n_train_steps: ${trainer.max_steps}
