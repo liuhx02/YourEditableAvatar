@@ -33,7 +33,7 @@ pip install kaolin==0.17.0 -f https://nvidia-kaolin.s3.us-east-2.amazonaws.com/t
 
 ## 🤖 Prepare Pretrained Models
 
-Download [normal-adapted-sd1.5]((https://huggingface.co/xanderhuang/normal-adapted-sd1.5/tree/main)) from  for spatial adaptation.
+Download [normal-adapted-sd1.5](https://huggingface.co/xanderhuang/normal-adapted-sd1.5/tree/main) from  for spatial adaptation.
 
 Download [controlnet-union-sdxl-1.0-promax](https://huggingface.co/xinsir/controlnet-union-sdxl-1.0), [sdxl-vae-fp16-fix](https://huggingface.co/madebyollin/sdxl-vae-fp16-fix), [stable-diffusion-xl-base-1.0](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0) for texture generation.
 
