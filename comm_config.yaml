@@ -1,0 +1,20 @@
+# sample camera
+shape_init_params: 0.9
+sample_type: "upper"
+eval_camera_distance: 3.3
+eval_fovy_deg: 45.
+eval_elevation_deg: 5.
+
+# trans camera
+shape_init_mesh_up: "+y"
+shape_init_mesh_front: "+z"
+R_name: "Orient_R.npy"
+metadata_name: "meta_data.json"
+mesh_name: "full_body.ply"
+anchor_path: "./load/shapes/full_body.obj"
+
+# tetgs
+blend_image_root: "blend_images"
+init_mesh: "init_mesh"
+init_mesh_coarse: "init_mesh_coarse"
+edit_mesh: "edit_mesh"
