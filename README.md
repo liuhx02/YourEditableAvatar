@@ -49,7 +49,7 @@ pretrained_models/
 
 ## 💽 Download data
 Download our [pre-processed data](https://drive.google.com/drive/folders/1gj-eBSEicgUGUT_9KwKJLsxEuyo_FOKq?usp=sharing) and put them under ```data``` folder, following the structure as ```./data/man```, etc.
-Besides, download [512_tets.npz](https://drive.google.com/drive/folders/1gj-eBSEicgUGUT_9KwKJLsxEuyo_FOKq?usp=sharing) and put it under ```Edit_core/load/tets```.
+Besides, download [512_tets.npz](https://drive.google.com/drive/folders/1gj-eBSEicgUGUT_9KwKJLsxEuyo_FOKq?usp=sharing) and put it under ```./Edit_core/load/tets```.
 
 ## 🏋️‍♂️ Training
 
