@@ -47,6 +47,8 @@ pretrained_models/
 ├── stable-diffusion-xl-base-1.0/
 ```
 
+[NOTE]: When using ControlNetPlus, we use the promax version for inpainting. Specifically, you need to use the checkpoint named ```diffusion_pytorch_model_promax.safetensors``` instead of ```diffusion_pytorch_model.safetensors```. You can fix this by simply rename the ```diffusion_pytorch_model_promax.safetensors``` to ```diffusion_pytorch_model.safetensors``` and delete the original ```diffusion_pytorch_model.safetensors```.
+
 ## 💽 Download data
 Download our [pre-processed data](https://drive.google.com/drive/folders/1gj-eBSEicgUGUT_9KwKJLsxEuyo_FOKq?usp=sharing) and put them under ```data``` folder, following the structure as ```./data/man```, etc.
 Besides, download [512_tets.npz](https://drive.google.com/drive/folders/1gj-eBSEicgUGUT_9KwKJLsxEuyo_FOKq?usp=sharing) and put it under ```./Edit_core/load/tets```.
