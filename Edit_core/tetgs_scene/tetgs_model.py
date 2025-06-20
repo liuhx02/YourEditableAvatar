@@ -675,65 +675,6 @@ def load_init_model(refined_tetgs_path, nerfmodel:GaussianSplattingWrapper):
     return refined_tetgs
 
 
-# TODO: fix this
-def convert_refined_tetgs_into_masked_gaussians_old(refined_tetgs: TetGS, keep_faces_num):
-    '''
-    input:
-        refined_tetgs: 重建训练完的tetgs ckpt
-        keep_faces_num: keep_mesh的面片数量
-        
-        在重建用mesh和编辑后mesh中, keep部分的顶点和面片都排在edit前面
-        verts: [keep_verts, edit_verts]
-        faces: [keep_faces, edit_faces]
-        
-        只需取出面片编号在[0:keep_faces_num]的高斯球即可
-    '''
-    
-    keep_gaussians = {}
-    sh_level = refined_tetgs.sh_levels
-    
-    with torch.no_grad():
-        xyz = refined_tetgs.points.cpu().numpy()
-        opacities = refined_tetgs.all_densities.cpu().numpy()
-        scales = scale_inverse_activation(refined_tetgs.scaling).cpu().numpy()
-        rots = refined_tetgs.quaternions.cpu().numpy()
-        sh_coordinates_dc = refined_tetgs._sh_coordinates_dc.cpu().numpy()
-        if sh_level > 1:
-            sh_coordinates_rest = refined_tetgs._sh_coordinates_rest.cpu().numpy()
-        # face_indices
-        face_indices = refined_tetgs._face_indices.cpu().numpy()
-        
-    keep_gaussian_indices = np.where((face_indices < keep_faces_num))[0]
-    # extract keep_attrs
-    keep_xyz = xyz[keep_gaussian_indices]
-    keep_opacities = opacities[keep_gaussian_indices]
-    keep_scales = scales[keep_gaussian_indices]
-    keep_rots = rots[keep_gaussian_indices]
-    keep_sh_coordinates_dc = sh_coordinates_dc[keep_gaussian_indices]
-    keep_face_indices = face_indices[keep_gaussian_indices]
-    if sh_level > 1:
-        keep_sh_coordinates_rest = sh_coordinates_rest[keep_gaussian_indices]
-        
-    keep_gaussians.update(
-        {
-            "keep_xyz": torch.tensor(keep_xyz, dtype=torch.float).to(refined_tetgs.nerfmodel.device),
-            "keep_opacities": torch.tensor(keep_opacities, dtype=torch.float).to(refined_tetgs.nerfmodel.device),
-            "keep_scales": torch.tensor(keep_scales, dtype=torch.float).to(refined_tetgs.nerfmodel.device),
-            "keep_rots": torch.tensor(keep_rots, dtype=torch.float).to(refined_tetgs.nerfmodel.device),
-            "keep_sh_coordinates_dc": torch.tensor(keep_sh_coordinates_dc, dtype=torch.float).to(refined_tetgs.nerfmodel.device),
-            "keep_face_indices": torch.tensor(keep_face_indices, dtype=torch.float).to(refined_tetgs.nerfmodel.device),
-            "sh_level": sh_level
-        }
-    )
-    if sh_level > 1:
-        keep_gaussians.update(
-            {
-                "keep_sh_coordinates_rest": torch.tensor(keep_sh_coordinates_rest, dtype=torch.float).to(refined_tetgs.nerfmodel.device),
-            }
-        )
-    
-    return keep_gaussians
-
 # inherit keep gaussians from reconstructed ones
 def convert_refined_tetgs_into_masked_gaussians(refined_tetgs: TetGS, edit_face_to_global_tet_idx):
     keep_gaussians = {}
