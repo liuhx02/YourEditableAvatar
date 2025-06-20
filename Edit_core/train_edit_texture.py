@@ -41,7 +41,7 @@ if __name__ == "__main__":
     # Call function
     # 1. inpaint stage
     trainer_tetgs_inpaint = TetGS_Inpaint(args, comm_cfg)
-    # trainer_tetgs_inpaint.inpaint_training(comm_cfg)
+    trainer_tetgs_inpaint.inpaint_training(comm_cfg)
     
     # 2. refine stage
     # 2.1 prepare guidance image

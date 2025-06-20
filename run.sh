@@ -23,61 +23,61 @@ cd Edit_core
 # 2.1 Geometry initialization
 exp_name="stage0-geometry-init"
 CASE_init=${exp_root_dir}/${exp_name}
-# python train_spatial.py \
-#     --config configs/geometry-init.yaml \
-#     --train \
-#     --gpu ${gpu_id} \
-#     tag=${tag} \
-#     name=${exp_name} \
-#     exp_root_dir=${exp_root_dir} \
-#     system.geometry.shape_init=${shape_init}
-# # 2.2 Export Geometry
-# python train_spatial.py \
-#     --config ${CASE_init}/configs/parsed.yaml \
-#     --export \
-#     --gpu ${gpu_id} \
-#     system.shape_init=false \
-#     system.prev_checkpoint=${CASE_init}/ckpts/initial_checkpoint.ckpt \
-#     resume=${CASE_init}/ckpts/initial_checkpoint.ckpt \
-#     system.exporter_part_type=mesh-exporter-init 
-# # 2.3 Texture initialization & segmentation
-# python train_init_texture.py \
-#     -s ${scene_path} \
-#     -m ${CASE_init}/save/init_mesh.npy \
-#     -o ${exp_root_dir} \
-#     --white_background True \
-#     --refinement_iterations 4000 \
-#     --seg_prompt ${seg_prompt} \
-#     --seg_mesh_path ${CASE_init}/save/init_mesh_coarse.ply \
-#     --gpu ${gpu_id}
+python train_spatial.py \
+    --config configs/geometry-init.yaml \
+    --train \
+    --gpu ${gpu_id} \
+    tag=${tag} \
+    name=${exp_name} \
+    exp_root_dir=${exp_root_dir} \
+    system.geometry.shape_init=${shape_init}
+# 2.2 Export Geometry
+python train_spatial.py \
+    --config ${CASE_init}/configs/parsed.yaml \
+    --export \
+    --gpu ${gpu_id} \
+    system.shape_init=false \
+    system.prev_checkpoint=${CASE_init}/ckpts/initial_checkpoint.ckpt \
+    resume=${CASE_init}/ckpts/initial_checkpoint.ckpt \
+    system.exporter_part_type=mesh-exporter-init 
+# 2.3 Texture initialization & segmentation
+python train_init_texture.py \
+    -s ${scene_path} \
+    -m ${CASE_init}/save/init_mesh.npy \
+    -o ${exp_root_dir} \
+    --white_background True \
+    --refinement_iterations 4000 \
+    --seg_prompt ${seg_prompt} \
+    --seg_mesh_path ${CASE_init}/save/init_mesh_coarse.ply \
+    --gpu ${gpu_id}
 
 # 3. Spatial editing
 # 3.1 Geometry editing
 exp_name="stage1-geometry-edit"
 CASE_edit=${exp_root_dir}/${exp_name}
-# python train_spatial.py \
-#     --config configs/geometry-edit.yaml \
-#     --train \
-#     --gpu ${gpu_id} \
-#     tag=${tag} \
-#     name=${exp_name} \
-#     exp_root_dir=${exp_root_dir} \
-#     resume=${CASE_init}/ckpts/initial_checkpoint.ckpt \
-#     system.prev_checkpoint=${CASE_init}/ckpts/initial_checkpoint.ckpt \
-#     system.prompt_processor_local.prompt="${local_prompt}, black background, normal map" \
-#     system.prompt_processor_global.prompt="${global_prompt}, black background, normal map" \
-#     system.geometry.shape_init=${shape_init} \
-#     system.mask_npy_path=${exp_root_dir}/editing_region_info.npy \
-#     data.local_type=${sample_type}
-# # 3.2 Export Geometry
-# python train_spatial.py \
-#     --config ${CASE_edit}/configs/parsed.yaml \
-#     --export \
-#     --gpu ${gpu_id} \
-#     system.prev_checkpoint=${CASE_init}/ckpts/initial_checkpoint.ckpt \
-#     resume=${CASE_edit}/ckpts/last.ckpt \
-#     system.mask_npy_path=${exp_root_dir}/editing_region_info.npy \
-#     system.exporter_part_type=mesh-exporter-part
+python train_spatial.py \
+    --config configs/geometry-edit.yaml \
+    --train \
+    --gpu ${gpu_id} \
+    tag=${tag} \
+    name=${exp_name} \
+    exp_root_dir=${exp_root_dir} \
+    resume=${CASE_init}/ckpts/initial_checkpoint.ckpt \
+    system.prev_checkpoint=${CASE_init}/ckpts/initial_checkpoint.ckpt \
+    system.prompt_processor_local.prompt="${local_prompt}, black background, normal map" \
+    system.prompt_processor_global.prompt="${global_prompt}, black background, normal map" \
+    system.geometry.shape_init=${shape_init} \
+    system.mask_npy_path=${exp_root_dir}/editing_region_info.npy \
+    data.local_type=${sample_type}
+# 3.2 Export Geometry
+python train_spatial.py \
+    --config ${CASE_edit}/configs/parsed.yaml \
+    --export \
+    --gpu ${gpu_id} \
+    system.prev_checkpoint=${CASE_init}/ckpts/initial_checkpoint.ckpt \
+    resume=${CASE_edit}/ckpts/last.ckpt \
+    system.mask_npy_path=${exp_root_dir}/editing_region_info.npy \
+    system.exporter_part_type=mesh-exporter-part
 
 # 4. Texture editing
 # [NOTE]: seed=-1 means random seed, try to change the seed for better results
