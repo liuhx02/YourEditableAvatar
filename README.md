@@ -76,9 +76,10 @@ Our project benefits from the amazing open-source projects, we are grateful for 
 If you find this work helpful, please consider citing our paper:
 
 ```bibtex
-@misc{2504.20403,
-Author = {Hanxi Liu and Yifang Men and Zhouhui Lian},
-Title = {Creating Your Editable 3D Photorealistic Avatar with Tetrahedron-constrained Gaussian Splatting},
-Year = {2025},
-Eprint = {arXiv:2504.20403},
+@inproceedings{liu2025creating,
+  title={Creating Your Editable 3D Photorealistic Avatar with Tetrahedron-constrained Gaussian Splatting},
+  author={Liu, Hanxi and Men, Yifang and Lian, Zhouhui},
+  booktitle={Proceedings of the Computer Vision and Pattern Recognition Conference},
+  pages={15976--15986},
+  year={2025}
 }
